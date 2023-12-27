@@ -5,21 +5,21 @@ type UserData = {
 };
 
 type LeaderBoardProps = {
-  usersData: UserData[];
+  winner: UserData[];
 };
 
-const LeaderBoard: React.FC<LeaderBoardProps> = ({ usersData }) => {
-  const highestPoints = usersData.reduce(
+const LeaderBoard: React.FC<LeaderBoardProps> = ({ winner }) => {
+  const highestPoints = winner.reduce(
     (maxUser, currentUser) =>
       currentUser.points > maxUser.points ? currentUser : maxUser,
-    usersData[0]
+    winner[0]
   ).points;
 
   function setZIndexToZero(value: boolean) {
     const element = document.getElementById("foreground");
     if (value) {
       if (element) {
-        element.style.zIndex = "0";
+        element.style.zIndex = "-10";
       } else {
         console.error(`Element with ID ${"foreground"} not found.`);
       }
@@ -41,10 +41,18 @@ const LeaderBoard: React.FC<LeaderBoardProps> = ({ usersData }) => {
     }
   }
 
+  const mystyle = {
+    overflow: 'hidden',
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
+  };
+  
+
   return (
     <>
       <div
-        className=" relative w-full h-full bg-gray-950 overflow-x-hidden overflow-y-scroll p-5 text-3xl font-serif text-center"
+        style={mystyle}
+        className="h-auto w-auto bg-gray-950 overflow-x-hidden overflow-y-scroll p-5 text-3xl font-serif text-center"
         onMouseEnter={() => {
           setZIndexToZero(true);
         }}
@@ -52,14 +60,13 @@ const LeaderBoard: React.FC<LeaderBoardProps> = ({ usersData }) => {
           setZIndexToZero(false);
         }}
       >
-        <div
+        {/* <div
           id="foreground"
-          className=" h-full w-full z-10 bg-gradient-to-b from-transparent via-transparent to-black fixed"
-        ></div>
-        LEADERBOARD
-        <div className="w-full h-1/3 flex justify-center items-center mt-5">
-          {usersData &&
-            usersData.slice(0, 3).map((data, index) => {
+          className="h-full w-full z-10 bg-gradient-to-b from-transparent via-transparent to-black fixed"
+        ></div> */}
+        <div className="w-full h-1/3 flex justify-center items-center my-5">
+          {winner &&
+            winner.sort((a, b) => b.points - a.points).slice(0, 3).map((data, index) => {
               return (
                 <div key={index}>
                   <img
@@ -76,8 +83,8 @@ const LeaderBoard: React.FC<LeaderBoardProps> = ({ usersData }) => {
               );
             })}
         </div>
-        {usersData &&
-          usersData.map((data, index) => {
+        {winner &&
+          winner.sort((a, b) => b.points - a.points).map((data, index) => {
             return (
               <div
                 key={index}
@@ -85,9 +92,9 @@ const LeaderBoard: React.FC<LeaderBoardProps> = ({ usersData }) => {
                   width: `${(data.points / highestPoints) * 100}%`,
                   backgroundColor: `rgba(255, 0, 0, ${data.points / 100})`,
                 }}
-                className={`relative h-10 justify-end text-center w-full mx-0.5 mt-auto rounded-sm flex rounded-r-full hover:bg-blue-700 transition-all duration-1000 ease-in-out`}
+                className={`relative mb-1 h-10 justify-end text-center w-full mx-0.5 mt-auto rounded-sm flex rounded-r-full hover:bg-blue-700 transition-all duration-1000 ease-in-out`}
               >
-                <span className=" h-full flex items-center font-mono text-xl mr-auto">
+                <span className=" h-auto flex items-center font-mono text-xl mr-auto">
                   {Math.round(data.points)} Points
                 </span>
                 <span className="absoulte h-full flex items-center font-mono text-xl">

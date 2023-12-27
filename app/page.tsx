@@ -14,9 +14,8 @@ export default function Home() {
       active: false,
     },
   ]);
-  const [Sorting, setSorting] = useState(false)
-  const [timetosort, setTimetosort] = useState(0)
-
+  const [Sorting, setSorting] = useState(false);
+  const [timetosort, setTimetosort] = useState(0);
 
   useEffect(() => {
     let newArray = Array.from({ length: number_of_bars }, (_, index) => ({
@@ -30,7 +29,6 @@ export default function Home() {
     setSampleArray((s) => (s.length > 1 ? randomizeArray([...s]) : s));
   };
 
-  
   function randomizeArray(
     array: { height: number; active: boolean }[]
   ): { height: number; active: boolean }[] {
@@ -41,11 +39,10 @@ export default function Home() {
     return array;
   }
 
-
   function bubbleSortByHeight() {
     let arr = [...sampleArray];
-    const date1 = Date.now()
-    setTimetosort(0)
+    const date1 = Date.now();
+    setTimetosort(0);
 
     const n = arr.length;
     let i = 0;
@@ -54,7 +51,7 @@ export default function Home() {
     const sortStep = () => {
       arr.forEach((bar) => (bar.active = false));
       if (i < n - 1) {
-        setSorting(s => s == false ? true : true)
+        setSorting((s) => (s == false ? true : true));
         if (j < n - i - 1) {
           arr[j].active = true;
           arr[j + 1].active = true;
@@ -74,18 +71,17 @@ export default function Home() {
           j = 0;
           setTimeout(sortStep, time);
         }
-      }
-      else{
-        setTimetosort(Date.now() - date1)
-        setSorting(s => s == true ? false : false)
+      } else {
+        setTimetosort(Date.now() - date1);
+        setSorting((s) => (s == true ? false : false));
       }
     };
     sortStep();
   }
 
   function selectionSortByHeight() {
-    const date1 = Date.now()
-    setTimetosort(0)
+    const date1 = Date.now();
+    setTimetosort(0);
     let arr = [...sampleArray];
 
     const n = arr.length;
@@ -97,7 +93,7 @@ export default function Home() {
 
       if (i < n - 1) {
         let minIndex = i;
-        setSorting(s => s == false ? true : true)
+        setSorting((s) => (s == false ? true : true));
 
         if (j < n) {
           arr[i].active = true;
@@ -108,25 +104,24 @@ export default function Home() {
             arr[j] = arr[minIndex];
             arr[minIndex] = temp;
           }
-          
+
           setSampleArray([...arr]);
           j++;
           setTimeout(sortStep, time);
-        } else {          
+        } else {
           i++;
           j = i + 1;
           setTimeout(sortStep, time);
         }
-      }
-      else{
-        setTimetosort(Date.now() - date1)
-        setSorting(s => s == true ? false : false)
+      } else {
+        setTimetosort(Date.now() - date1);
+        setSorting((s) => (s == true ? false : false));
       }
     };
 
     sortStep();
   }
-  
+
   const usersData = [
     { username: "user1", profilePicture: "url1", points: 30 },
     { username: "user2", profilePicture: "url2", points: 80 },
@@ -182,7 +177,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex w-screen h-screen">
+      <div className="w-2/3 h-96 bg-green-600">
         {/* <LeftCanvas
           timetosort={timetosort}
           sorting={Sorting}
@@ -194,7 +189,7 @@ export default function Home() {
           number_of_bars={number_of_bars}
           setNumber_of_bars={setNumber_of_bars}
         /> */}
-        <LeaderBoard usersData={usersData} />
+        <LeaderBoard winner={usersData} />
       </div>
     </>
   );
